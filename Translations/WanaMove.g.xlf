@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="en-US" original="WanaMove">
+    <body>
+      <group id="body">
+        <trans-unit id="Codeunit 3036054926 - Method 59423316 - NamedType 478811472" size-unit="char" translate="yes" xml:space="preserve">
+          <source>must be before Opening Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit WanaMove Export Helper - Method Initialize - NamedType MustBeBeforeOpeningDateErr</note>
+        </trans-unit>
+        <trans-unit id="Report 3011280115 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Export FA Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export FA Entries - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3011280115 - Method 2736589801 - NamedType 4288424883" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process Time : %1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export FA Entries - Method OnPostReport - NamedType DoneMsg</note>
+        </trans-unit>
+        <trans-unit id="Report 3011280115 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export FA Entries - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3011280115 - Control 861194076 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export FA Entries - Control OpeningDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3011280115 - Control 634145750 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening DocumentNo</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export FA Entries - Control OpeningDocumentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3011280115 - Control 3360093480 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening Source Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export FA Entries - Control OpeningSourceCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Export Fiscal Year</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - Method 2736589801 - NamedType 4288424883" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process Time : %1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - Method OnPostReport - NamedType DoneMsg</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - ReportDataItem 430334802 - Property 1806354803" size-unit="char" translate="yes" xml:space="preserve">
+          <source>SourceCode Compression</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - ReportDataItem SourceCodeCompression - Property RequestFilterHeading</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - ReportDataItem 495931838 - Property 1806354803" size-unit="char" translate="yes" xml:space="preserve">
+          <source>SourceCode Details</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - ReportDataItem SourceCodeDetails - Property RequestFilterHeading</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - Control 861194076 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - Control OpeningDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - Control 634145750 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening DocumentNo</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - Control OpeningDocumentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1610828667 - Control 3360093480 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening Source Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Fiscal Year - Control OpeningSourceCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Export Open Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - Method 1642947623 - NamedType 3219643245" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Reprise lettrage</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Method FYStartingOpenBalance - NamedType AppliedOnFiscalYearLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - Method 2736589801 - NamedType 4288424883" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process Time : %1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Method OnPostReport - NamedType DoneMsg</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - ReportDataItem 3639302818 - Method 3715240 - NamedType 2967110432" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Reprise rapprochement</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - ReportDataItem BankAccountLedgerEntry - Method OnPostDataItem - NamedType PostedReconciliationLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - Control 861194076 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Control OpeningDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - Control 634145750 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening DocumentNo</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Control OpeningDocumentNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2617593518 - Control 3360093480 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opening Source Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Control OpeningSourceCode - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 463881781 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Set Applies-to ID</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Set Applies-to ID - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 3389587844 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Compress Balance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query WanaMove Compress Balance - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Query 3741950447 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Compress Income</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Query WanaMove Compress Income - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 3231063772 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort WanaMove - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 3231063772 - Method 3882300021 - NamedType 664955600" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 lines imported in %2.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort WanaMove - Method DoneMessage - NamedType ImportDoneMsg</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3202659785 - Action 3231063772 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>WanaMove</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension WanaMove General Journal - Action WanaMove - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3202659785 - Action 2488776959 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Import WanaMove</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension WanaMove General Journal - Action WanaMoveImport - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3202659785 - Action 2488776959 - Method 1377591017 - NamedType 4289051840" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 3202659785">
+          <source>Do you want to delete %1 previous lines?</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension WanaMove General Journal - Action WanaMoveImport - Method OnAction - NamedType DeleteLines</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3202659785 - Control 3320823955 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Specifies the value of the Line No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension WanaMove General Journal - Control Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3202659785 - Control 2720485332 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
+          <source>Specifies the value of the Source Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension WanaMove General Journal - Control Source Code - Property ToolTip</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

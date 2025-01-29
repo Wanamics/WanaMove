@@ -1,0 +1,32 @@
+{
+  "target": "Cloud",
+  "id": "942d85ac-2b13-46b9-bb7d-41534671c468",
+  "name": "WanaMove",
+  "publisher": "Wanamics",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "Wanamics90x90.png",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "15.0.0.0",
+  "idRanges": [
+    {
+      "from": 87900,
+      "to": 87999
+    }
+  ],
+  "contextSensitiveHelpUrl": "https://www.wanamics.fr/support/",
+  "showMyCode": true,
+  "runtime": "4.0",
+  "features": [
+    "TranslationFile", 
+    "GenerateCaptions",
+    "NoImplicitWith"
+  ]
+}
