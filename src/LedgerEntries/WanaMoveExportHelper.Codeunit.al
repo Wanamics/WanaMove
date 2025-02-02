@@ -81,12 +81,12 @@ Codeunit 87907 "WanaMove Export Helper"
         TempBlob: Codeunit "Temp Blob";
         oStream: OutStream;
         iStream: InStream;
-        WanaMoveXml: XmlPort WanaMove;
+        WanaMoveToGenJournalLine: XmlPort "WanaMove To Gen. Journal Line";
     begin
-        WanaMoveXml.ExportFrom(pGenJournalLine);
+        WanaMoveToGenJournalLine.ExportFrom(pGenJournalLine);
         TempBlob.CreateOutStream(oStream);
-        WanaMoveXml.SetDestination(oStream);
-        WanaMoveXml.Export();
+        WanaMoveToGenJournalLine.SetDestination(oStream);
+        WanaMoveToGenJournalLine.Export();
         TempBlob.CreateInStream(iStream);
         CopyStream(oStream, iStream);
         DownloadFromStream(iStream, '', '', '', pFileName);

@@ -118,6 +118,26 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Export Open Entries - Control OpeningSourceCode - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 3146840032 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Reminder Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Reminder Entries - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3146840032 - Method 2736589801 - NamedType 4288424883" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process Time : %1</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Reminder Entries - Method OnPostReport - NamedType DoneMsg</note>
+        </trans-unit>
+        <trans-unit id="Report 3146840032 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Reminder Entries - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3146840032 - Control 39585143 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Direction</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report WanaMove Reminder Entries - Control Direction - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 463881781 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>WanaMove Set Applies-to ID</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -133,15 +153,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Query WanaMove Compress Income - Property Caption</note>
         </trans-unit>
-        <trans-unit id="XmlPort 3231063772 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>WanaMove</source>
+        <trans-unit id="XmlPort 3146840032 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove Reminder Entries</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">XmlPort WanaMove - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort WanaMove Reminder Entries - Property Caption</note>
         </trans-unit>
-        <trans-unit id="XmlPort 3231063772 - Method 3882300021 - NamedType 664955600" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="XmlPort 3060061538 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>WanaMove To Gen. Journal Line</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort WanaMove To Gen. Journal Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="XmlPort 3060061538 - Method 3882300021 - NamedType 664955600" size-unit="char" translate="yes" xml:space="preserve">
           <source>%1 lines imported in %2.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">XmlPort WanaMove - Method DoneMessage - NamedType ImportDoneMsg</note>
+          <note from="Xliff Generator" annotates="general" priority="3">XmlPort WanaMove To Gen. Journal Line - Method DoneMessage - NamedType ImportDoneMsg</note>
         </trans-unit>
         <trans-unit id="PageExtension 3202659785 - Action 3231063772 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 2583272393">
           <source>WanaMove</source>

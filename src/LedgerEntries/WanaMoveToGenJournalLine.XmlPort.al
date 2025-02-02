@@ -1,6 +1,6 @@
-xmlport 87901 WanaMove
+xmlport 87901 "WanaMove To Gen. Journal Line"
 {
-    Caption = 'WanaMove';
+    Caption = 'WanaMove To Gen. Journal Line';
     Format = VariableText;
     FieldSeparator = '<TAB>';
     FieldDelimiter = '<None>';
