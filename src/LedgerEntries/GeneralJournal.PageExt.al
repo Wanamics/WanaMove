@@ -1,4 +1,4 @@
-pageextension 87900 "WanaMove General Journal" extends "General Journal"
+pageextension 87990 "WanaMove General Journal" extends "General Journal"
 {
     layout
     {

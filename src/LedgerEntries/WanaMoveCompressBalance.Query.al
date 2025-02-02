@@ -1,4 +1,4 @@
-query 87901 "WanaMove Compress Balance"
+query 87990 "WanaMove Compress Balance"
 {
     QueryType = Normal;
 

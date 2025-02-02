@@ -1,4 +1,4 @@
-report 87900 "WanaMove Reminder Entries"
+report 87995 "WanaMove Reminder Entries"
 {
     ApplicationArea = Basic, Suite;
     Caption = 'WanaMove Reminder Entries';

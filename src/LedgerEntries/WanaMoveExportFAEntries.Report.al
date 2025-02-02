@@ -1,4 +1,4 @@
-report 87903 "WanaMove Export FA Entries"
+report 87993 "WanaMove Export FA Entries"
 {
     ApplicationArea = Basic, Suite;
     Caption = 'WanaMove Export FA Entries';

@@ -1,4 +1,4 @@
-report 87902 "WanaMove Export Fiscal Year"
+report 87992 "WanaMove Export Fiscal Year"
 {
     ApplicationArea = Basic, Suite;
     Caption = 'WanaMove Export Fiscal Year';

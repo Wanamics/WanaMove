@@ -1,4 +1,4 @@
-report 87904 "WanaMove Set Applies-to ID"
+report 87994 "WanaMove Set Applies-to ID"
 {
     ApplicationArea = All;
     Caption = 'WanaMove Set Applies-to ID';

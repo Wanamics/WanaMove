@@ -1,4 +1,4 @@
-xmlport 87990 "WanaMove Reminder Entries"
+xmlport 87995 "WanaMove Reminder Entries"
 {
     Caption = 'WanaMove Reminder Entries';
     Format = VariableText;

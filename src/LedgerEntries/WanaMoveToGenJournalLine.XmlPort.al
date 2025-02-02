@@ -1,4 +1,4 @@
-xmlport 87901 "WanaMove To Gen. Journal Line"
+xmlport 87990 "WanaMove To Gen. Journal Line"
 {
     Caption = 'WanaMove To Gen. Journal Line';
     Format = VariableText;

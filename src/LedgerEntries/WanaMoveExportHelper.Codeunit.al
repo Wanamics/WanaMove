@@ -1,4 +1,4 @@
-Codeunit 87907 "WanaMove Export Helper"
+Codeunit 87990 "WanaMove Export Helper"
 {
     var
         AccountMap: Dictionary of [Code[20], Code[20]];

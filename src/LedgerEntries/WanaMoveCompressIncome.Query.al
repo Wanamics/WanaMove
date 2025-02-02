@@ -1,4 +1,4 @@
-query 87900 "WanaMove Compress Income"
+query 87991 "WanaMove Compress Income"
 {
     QueryType = Normal;
 

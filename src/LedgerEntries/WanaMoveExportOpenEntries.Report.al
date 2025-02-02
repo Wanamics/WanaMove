@@ -1,7 +1,7 @@
 // Notes:
 //  No Currency used
 //  Mono posting group per customer/vendor
-report 87901 "WanaMove Export Open Entries"
+report 87991 "WanaMove Export Open Entries"
 {
     ApplicationArea = Basic, Suite;
     Caption = 'WanaMove Export Open Entries';
