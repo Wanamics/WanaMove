@@ -29,11 +29,16 @@ report 87995 "WanaMove Reminder Entries"
         }
     }
 
-    // trigger OnPreReport()
-    // begin
-    //     Window.Open('#1############################');
-    //     StartTime := CurrentDateTime;
-    // end;
+    trigger OnPreReport()
+    var
+        ReminderFinChargeEntry: Record "Reminder/Fin. Charge Entry";
+    begin
+        if not ReminderFinChargeEntry.IsEmpty then
+            if not Confirm('WARNING : %1 existing "%2" will be deleted.\Do you want to continue?', false, ReminderFinChargeEntry.Count, ReminderFinChargeEntry.TableCaption) then
+                CurrReport.Quit()
+            else
+                ReminderFinChargeEntry.DeleteAll(true);
+    end;
 
     trigger OnPostReport()
     var
