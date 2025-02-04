@@ -148,15 +148,18 @@ report 87992 "WanaMove Export Fiscal Year"
                     Caption = 'Options';
                     field(OpeningSourceCode; Opening."Source Code")
                     {
+                        ApplicationArea = All;
                         Caption = 'Opening Source Code';
                         TableRelation = "Source Code";
                     }
                     field(OpeningDate; Opening."Posting Date")
                     {
+                        ApplicationArea = All;
                         Caption = 'Opening Date';
                     }
                     field(OpeningDocumentNo; Opening."Document No.")
                     {
+                        ApplicationArea = All;
                         Caption = 'Opening DocumentNo';
                     }
                 }

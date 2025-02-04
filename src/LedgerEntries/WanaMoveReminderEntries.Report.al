@@ -21,6 +21,7 @@ report 87995 "WanaMove Reminder Entries"
                     Caption = 'Options';
                     field(Direction; Direction)
                     {
+                        ApplicationArea = All;
                         Caption = 'Direction';
                     }
                 }

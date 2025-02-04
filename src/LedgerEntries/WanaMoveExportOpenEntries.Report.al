@@ -234,15 +234,18 @@ report 87991 "WanaMove Export Open Entries"
                     Caption = 'Options';
                     field(OpeningSourceCode; OpeningSourceCode)
                     {
+                        ApplicationArea = All;
                         Caption = 'Opening Source Code';
                         TableRelation = "Source Code";
                     }
                     field(OpeningDate; OpeningDate)
                     {
+                        ApplicationArea = All;
                         Caption = 'Opening Date';
                     }
                     field(OpeningDocumentNo; OpeningDocumentNo)
                     {
+                        ApplicationArea = All;
                         Caption = 'Opening DocumentNo';
                     }
                 }

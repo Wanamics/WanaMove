@@ -9,6 +9,7 @@ xmlport 87995 "WanaMove Reminder Entries"
     UseRequestPage = false;
     DefaultFieldsValidation = false;
     FormatEvaluate = Xml;
+    Permissions = Tabledata "Cust. Ledger Entry" = m;
 
     schema
     {
@@ -61,6 +62,8 @@ xmlport 87995 "WanaMove Reminder Entries"
                     CustLedgerEntry.SetRange("Document No.", ReminderFinChargeEntry."Document No.");
                     CustLedgerEntry.SetRange("Customer No.", ReminderFinChargeEntry."Customer No.");
                     CustLedgerEntry.FindFirst();
+                    CustLedgerEntry."Last Issued Reminder Level" := ReminderFinChargeEntry."Reminder Level";
+                    CustLedgerEntry.Modify(true);
                     NoOfLines += 1;
                     ReminderFinChargeEntry."Entry No." := NoOfLines;
                     ReminderFinChargeEntry."Customer Entry No." := CustLedgerEntry."Entry No.";
