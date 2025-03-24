@@ -17,10 +17,11 @@ report 87993 "WanaMove Export FA Entries"
                 DataItemLink = "FA No." = field("FA No.");
                 DataItemTableView =
                     sorting("FA No.", "Depreciation Book Code", "FA Posting Date")
-                    where("FA Posting Type" = filter("Acquisition Cost" | "Depreciation" | Appreciation | "Write-Down"));
+                    where("FA Posting Type" = filter("Acquisition Cost" | "Depreciation" | Appreciation | "Write-Down" | "Proceeds on Disposal"));
                 trigger OnPreDataItem()
                 begin
                     FYStartingDepreciation := 0;
+                    ProceedsOnDisposalAmount := 0;
                 end;
 
                 trigger OnAfterGetRecord()
@@ -28,43 +29,46 @@ report 87993 "WanaMove Export FA Entries"
                     if ("FA Posting Type" = "FA Posting Type"::"Depreciation") and ("Posting Date" < FYStartingDate) then
                         FYStartingDepreciation += "Amount (LCY)"
                     else
-                        if "FA Posting Category" = "FA Posting Category"::Disposal then begin
-                            if "FA Posting Type" = "FA Posting Type"::"Acquisition Cost" then begin
+                        if "FA Posting Type" = "FA Posting Type"::"Proceeds on Disposal" then
+                            ProceedsOnDisposalAmount := "Amount (LCY)"
+                        else
+                            if "FA Posting Category" = "FA Posting Category"::Disposal then begin
+                                if "FA Posting Type" = "FA Posting Type"::"Acquisition Cost" then begin
+                                    Helper.Set(TempGenJournalLine,
+                                        "Source Code", "Posting Date", "Document Date", "Document Type", "Document No.",
+                                        TempGenJournalLine."Account Type"::"Fixed Asset", "FA No.", BalAccount."Consol. Credit Acc.",
+                                        Description, -ProceedsOnDisposalAmount, "External Document No.", "Reason Code", '',
+                                        "Dimension Set ID", "Global Dimension 1 Code", "Global Dimension 2 Code");
+                                    TempGenJournalLine."Depreciation Book Code" := "Depreciation Book Code";
+                                    TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::Disposal;
+                                    TempGenJournalLine."Posting Group" := "FA Posting Group";
+                                    //?? Amortir jusqu'à date cession ?
+                                    OnBeforeInsertFALedgerEntry(TempGenJournalLine, FALedgerEntry);
+                                    TempGenJournalLine.Insert(false); // Amount is null
+                                end
+                            end else begin
                                 Helper.Set(TempGenJournalLine,
                                     "Source Code", "Posting Date", "Document Date", "Document Type", "Document No.",
                                     TempGenJournalLine."Account Type"::"Fixed Asset", "FA No.", BalAccount."Consol. Credit Acc.",
-                                    Description, 0, "External Document No.", "Reason Code", '',
+                                    Description, "Amount (LCY)", "External Document No.", "Reason Code", '',
                                     "Dimension Set ID", "Global Dimension 1 Code", "Global Dimension 2 Code");
                                 TempGenJournalLine."Depreciation Book Code" := "Depreciation Book Code";
-                                TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::Disposal;
-                                TempGenJournalLine."Posting Group" := "FA Posting Group";
-                                //?? Amortir jusqu'à date cession ?
-                                OnBeforeInsertFALedgerEntry(TempGenJournalLine, FALedgerEntry);
-                                TempGenJournalLine.Insert(false); // Amount is null
-                            end
-                        end else begin
-                            Helper.Set(TempGenJournalLine,
-                                "Source Code", "Posting Date", "Document Date", "Document Type", "Document No.",
-                                TempGenJournalLine."Account Type"::"Fixed Asset", "FA No.", BalAccount."Consol. Credit Acc.",
-                                Description, "Amount (LCY)", "External Document No.", "Reason Code", '',
-                                "Dimension Set ID", "Global Dimension 1 Code", "Global Dimension 2 Code");
-                            TempGenJournalLine."Depreciation Book Code" := "Depreciation Book Code";
 
-                            case "FA Posting Type" of
-                                "FA Posting Type"::"Acquisition Cost":
-                                    TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::"Acquisition Cost";
-                                "FA Posting Type"::"Appreciation":
-                                    TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::"Appreciation";
-                                "FA Posting Type"::Depreciation:
-                                    TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::Depreciation;
-                                "FA Posting Type"::"Write-Down":
-                                    TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::"Write-Down";
+                                case "FA Posting Type" of
+                                    "FA Posting Type"::"Acquisition Cost":
+                                        TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::"Acquisition Cost";
+                                    "FA Posting Type"::"Appreciation":
+                                        TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::"Appreciation";
+                                    "FA Posting Type"::Depreciation:
+                                        TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::Depreciation;
+                                    "FA Posting Type"::"Write-Down":
+                                        TempGenJournalLine."FA Posting Type" := TempGenJournalLine."FA Posting Type"::"Write-Down";
+                                end;
+                                TempGenJournalLine."Posting Group" := "FA Posting Group";
+                                OnBeforeInsertFALedgerEntry(TempGenJournalLine, FALedgerEntry);
+                                if TempGenJournalLine.Amount <> 0 then
+                                    TempGenJournalLine.Insert(false);
                             end;
-                            TempGenJournalLine."Posting Group" := "FA Posting Group";
-                            OnBeforeInsertFALedgerEntry(TempGenJournalLine, FALedgerEntry);
-                            if TempGenJournalLine.Amount <> 0 then
-                                TempGenJournalLine.Insert(false);
-                        end;
                 end;
 
                 trigger OnPostDataItem()
@@ -170,6 +174,7 @@ report 87993 "WanaMove Export FA Entries"
         FAPostingGroup: Record "FA Posting Group";
         BalAccount: Record "G/L Account";
         FYStartingDepreciation: Decimal;
+        ProceedsOnDisposalAmount: Decimal;
 
     // local procedure FYStartingOpenBalance(pAccountType: Integer; pAccountNo: Code[20]; pAmount: Decimal)
     // var

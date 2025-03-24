@@ -18,7 +18,8 @@ Codeunit 87990 "WanaMove Export Helper"
         GLEntry.SetCurrentKey("Posting Date");
         GLEntry.FindLast();
         if GLEntry."Posting Date" >= pOpeningDate then
-            GLEntry.FieldError("Posting Date", MustBeBeforeOpeningDateErr);
+            if not Confirm('WARNING Last Posting Date %1 is greater than Opening Date.\Do you want to continue?', false, GLEntry."Posting Date") then
+                GLEntry.FieldError("Posting Date", MustBeBeforeOpeningDateErr);
 
         InitializeAccountMap(AccountMap)
     end;

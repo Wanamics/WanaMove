@@ -33,11 +33,12 @@ report 87995 "WanaMove Reminder Entries"
     var
         ReminderFinChargeEntry: Record "Reminder/Fin. Charge Entry";
     begin
-        if not ReminderFinChargeEntry.IsEmpty then
-            if not Confirm('WARNING : %1 existing "%2" will be deleted.\Do you want to continue?', false, ReminderFinChargeEntry.Count, ReminderFinChargeEntry.TableCaption) then
-                CurrReport.Quit()
-            else
-                ReminderFinChargeEntry.DeleteAll(true);
+        if Direction = Direction::Import then
+            if not ReminderFinChargeEntry.IsEmpty then
+                if not Confirm('WARNING : %1 existing "%2" will be deleted.\Do you want to continue?', false, ReminderFinChargeEntry.Count, ReminderFinChargeEntry.TableCaption) then
+                    CurrReport.Quit()
+                else
+                    ReminderFinChargeEntry.DeleteAll(true);
     end;
 
     trigger OnPostReport()
