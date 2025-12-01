@@ -1,0 +1,33 @@
+{
+  "id": "636a001e-2708-467f-8fc2-0dc8fcf2dc5d",
+  "name": "WanaMove",
+  "publisher": "Wanamics",
+  "version": "27.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "contextSensitiveHelpUrl": "https://github.com/Wanamics/WanaMove?tab=readme-ov-file#extension-wanamove",
+  "idRanges": [
+    {
+      "from": 87990,
+      "to": 87999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "15.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
