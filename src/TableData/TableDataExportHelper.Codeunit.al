@@ -1,57 +1,74 @@
 Codeunit 87992 "WanaMove TableData Helper"
 {
+    procedure SetGlobals(pSkipComments: boolean; pSkipBlob: boolean; pSkipMedia: boolean)
+    begin
+        SkipComments := pSkipComments;
+        SkipBlob := pSkipBlob;
+        SkipMedia := pSkipMedia;
+    end;
+
     procedure ExportTable(pRecordRef: RecordRef; pJsonObject: JsonObject; var pCountRecords: Integer): Boolean
     var
         // RecRef: RecordRef;
         jRecordArray: JsonArray;
-        // RecordLink: Record "Record Link";
-        // RecordLinkManagement: Codeunit "Record Link Management";
-        Filters: Text;
+    // RecordLink: Record "Record Link";
+    // RecordLinkManagement: Codeunit "Record Link Management";
+    // Filters: Text;
     begin
-        if IsChildren.Contains(pRecordRef.Number) then
-            exit;
-        // RecRef.Open(pTableID);
-        // if RecRef.IsEmpty() then
-        //     exit;
+        if HasIntegerAsPrimaryKey(pRecordRef) then
+            /* TEMP
+                exit; // Avoid Entries
+            if IsChildren.Contains(pRecordRef.Number) then
+                exit;
+                TEMP*/
         if pRecordRef.FindSet() then
-            repeat
-                jRecordArray.Add(ToJsonObject(pRecordRef));
-                pCountRecords += 1;
-            // //TODO +RecordLinks (2000000068) (Type Note, Link)
-            // if RecRef.HasLinks then begin
-            //     jLinkArray.Add(ToJson) :=;
-            // RecordLinkManagement. .GetRecordLinks(RecRef.RecordID);
-            // end;
-            // RecordLink.SetCurrentKey("Record ID");
-            // RecordLink.SetRange("Record ID", RecRef.RecordID);
-            // if RecordLink.FindSet() then
-            //     repeat
-            //     //TODO
-            //     until RecordLink.Next() = 0;
-            until pRecordRef.Next() = 0;
-        // if not IsEmpty(jRecordArray) then
+                repeat
+                    jRecordArray.Add(ToJsonObject(pRecordRef));
+                    pCountRecords += 1;
+                //TODO +RecordLinks (2000000068) (Type Note, Link)
+                // if RecRef.HasLinks then begin
+                //     jLinkArray.Add(ToJson) :=;
+                //     RecordLinkManagement. .GetRecordLinks(RecRef.RecordID);
+                // end;
+                // RecordLink.SetCurrentKey("Record ID");
+                // RecordLink.SetRange("Record ID", RecRef.RecordID);
+                // if RecordLink.FindSet() then
+                //     repeat
+                //     //TODO
+                //     until RecordLink.Next() = 0;
+                until pRecordRef.Next() = 0;
         pJsonObject.Add(Format(pRecordRef.Number), jRecordArray);
-        Exit(true);
+        exit(true);
     end;
 
-    local procedure ToJsonObject(var RecRef: RecordRef) ReturnValue: JsonObject
+    local procedure HasIntegerAsPrimaryKey(pRecRef: RecordRef): Boolean
+    var
+        kRef: KeyRef;
+        FldRef: FieldRef;
+    begin
+        kRef := pRecRef.KeyIndex(1);
+        if kRef.FieldCount = 1 then
+            exit(kRef.FieldIndex(1).Type = FldRef.Type::Integer);
+    end;
+
+    local procedure ToJsonObject(var pRecRef: RecordRef) ReturnValue: JsonObject
     var
         FldRef: FieldRef;
         i: Integer;
         Base64Text: Text;
         jChildren: JsonObject;
     begin
-        for i := 1 to RecRef.FieldCount() do begin
-            FldRef := RecRef.FieldIndex(i);
+        for i := 1 to pRecRef.FieldCount() do begin
+            FldRef := pRecRef.FieldIndex(i);
             case FldRef.Type of
                 FieldType::Blob:
-                    if ExportBlob then begin
+                    if not SkipBlob then begin
                         Base64Text := ToBase64(FldRef);
                         if Base64Text <> '' then
                             ReturnValue.Add(Format(FldRef.Number), Base64Text);
                     end;
                 FieldType::Media:
-                    if ExportMedia then
+                    if not SkipMedia then
                         if not IsNullGuid(FldRef.Value()) then begin
                             TableDataBuffer."Some Media" := FldRef.Value();
                             ReturnValue.Add(Format(FldRef.Number()), ToBase64(TableDataBuffer."Some Media".MediaId()));
@@ -64,9 +81,9 @@ Codeunit 87992 "WanaMove TableData Helper"
             end;
         end;
         // ReturnValue.Add('Children', AddChildren(RecRef));
-        if not (RecRef.Number in [Database::"G/L Entry"]) then // Avoid 253: G/L Entry - VAT Entry Link, 5823: G/L - Item Ledger Relation
-            GetExplicitChildren(RecRef, jChildren);
-        GetImplicitChildren(RecRef, jChildren);
+        if not (pRecRef.Number in [Database::"G/L Entry"]) then // Avoid 253: G/L Entry - VAT Entry Link, 5823: G/L - Item Ledger Relation
+            GetExplicitChildren(pRecRef, jChildren);
+        GetImplicitChildren(pRecRef, jChildren);
         if not IsEmpty(jChildren) then
             ReturnValue.Add('Children', jChildren);
     end;
@@ -74,20 +91,23 @@ Codeunit 87992 "WanaMove TableData Helper"
     local procedure GetExplicitChildren(var pParentRecRef: RecordRef; var jChildren: JsonObject)
     var
         TableRelationField: Record Field;
+        xTableNo: Integer;
     begin
         TableRelationField.SetRange(RelationTableNo, pParentRecRef.Number);
         TableRelationField.SetRange(IsPartOfPrimaryKey, true);
         TableRelationField.SetRange(ObsoleteState, TableRelationField.ObsoleteState::No);
-        if TableRelationField.FindSet() then begin
+        if TableRelationField.FindSet() then
             repeat
-                AddChildren(pParentRecRef, TableRelationField.TableNo, jChildren);
+                if TableRelationField.TableNo <> xTableNo then // Avoid Error if twin relations (ex : Location / TransferRoute, From & To)
+                    AddChildren(pParentRecRef, TableRelationField.TableNo, jChildren);
+                xTableNo := TableRelationField.TableNo;
             until TableRelationField.Next() = 0;
-        end;
     end;
 
     local procedure GetImplicitChildren(var pParentRecRef: RecordRef; var jChildren: JsonObject)
     begin
-        ExportComments.GetComments(pParentRecRef, jChildren);
+        if not SkipComments then
+            ExportComments.GetComments(pParentRecRef, jChildren);
 
         if pParentRecRef.Number in [Database::"Sales Header", Database::"Purchase Header", Database::"Service Header"] then
             AddApprovalEntries(pParentRecRef, jChildren);
@@ -96,10 +116,8 @@ Codeunit 87992 "WanaMove TableData Helper"
     local procedure AddChildren(var pParentRecRef: RecordRef; pChildTableNo: Integer; pReturnValue: JsonObject)
     var
         ChildRecRef: RecordRef;
-        // ParentField, ChildField : Record Field;
         ParentFieldRef, ChildFieldRef : FieldRef;
         ParentKeyRef, ChildKeyRef : KeyRef;
-        jChildren: JsonArray;
         i: Integer;
     begin
         ParentKeyRef := pParentRecRef.KeyIndex(1);
@@ -114,34 +132,20 @@ Codeunit 87992 "WanaMove TableData Helper"
                 exit;
             ChildFieldRef.SetRange(ParentFieldRef.Value);
         end;
-        jChildren := AddChild(ChildRecRef);
-        if jChildren.Count > 0 then
-            pReturnValue.Add(Format(ChildRecRef.Number), jChildren);
-        // ParentField.SetRange(TableNo, pParentRecRef.Number);
-        // ParentField.SetRange(IsPartOfPrimaryKey, true);
-        // if ParentField.FindSet() then begin
-        //     repeat
-        //         if ChildField.Get(pChildTableNo, ParentField."No.") and ChildField.IsPartOfPrimaryKey then begin
-        //             ParentFieldRef := pParentRecRef.Field(ParentField."No.");
-        //             ChildFieldRef := ChildRecRef.Field(ParentField."No.");
-        //             ChildFieldRef.SetRange(ParentFieldRef.Value());
-        //         end;
-        //     until ParentField.Next() = 0;
-        //     jChildren := AddChild(ChildRecRef);
-        //     if jChildren.Count > 0 then
-        //         pReturnValue.Add(Format(ChildRecRef.Number), jChildren);
-        // end;
+        if AddChild(ChildRecRef).Count > 0 then
+            pReturnValue.Add(Format(ChildRecRef.Number), AddChild(ChildRecRef));
     end;
 
     local procedure AddChild(var pChildRecRef: RecordRef) ReturnValue: JsonArray
-    var
-        jArray: JsonArray;
+    // var
+    //     jArray: JsonArray;
     begin
         if pChildRecRef.FindSet() then begin
             repeat
-                jArray.Add(ToJsonObject(pChildRecRef));
+                // jArray.Add(ToJsonObject(pChildRecRef));
+                ReturnValue.Add(ToJsonObject(pChildRecRef));
             until pChildRecRef.Next() = 0;
-            ReturnValue.Add(jArray);
+            // ReturnValue.Add(jArray);
         end;
         if not IsChildren.Contains(pChildRecRef.Number) then
             IsChildren.Add(pChildRecRef.Number);
@@ -172,7 +176,6 @@ Codeunit 87992 "WanaMove TableData Helper"
     local procedure ToBase64(FldRef: FieldRef): Text
     var
         TempBlob: Codeunit "Temp Blob";
-        TableDataBuffer: Record "TableData Buffer";
     begin
         FldRef.CalcField();
         TempBlob.FromFieldRef(FldRef);
@@ -182,7 +185,6 @@ Codeunit 87992 "WanaMove TableData Helper"
     local procedure HasValue(var pFldRef: FieldRef): Boolean
     var
         jValue: JsonValue;
-        Duration: Duration;
     begin
         jValue := ToJsonValue(pFldRef);
         case pFldRef.Type of
@@ -271,9 +273,7 @@ Codeunit 87992 "WanaMove TableData Helper"
     end;
 
     var
-        // jObject: JsonObject;
-        ExportBlob: Boolean;
-        ExportMedia: Boolean;
+        SkipComments, SkipBlob, SkipMedia : Boolean;
         TableDataBuffer: Record "TableData Buffer";
         Base64Convert: Codeunit "Base64 Convert";
         // CountRecords, CountTables : integer;

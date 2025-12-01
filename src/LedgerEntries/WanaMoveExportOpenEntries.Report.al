@@ -111,7 +111,7 @@ report 87991 "WanaMove Export Open Entries"
                     VendorPostingGroup.Get("Vendor Posting Group");
                     BalAccount.Get(VendorPostingGroup."Payables Account");
                 end;
-                "Net Change (LCY)" *= -1; // because calcfomula reverse sign : - sum(...))
+                "Net Change (LCY)" *= -1; // Calcfomula reverse sign for Vendor Ledger Entries : - sum(...))
             end;
         }
         dataitem(GLAccount; "G/L Account")

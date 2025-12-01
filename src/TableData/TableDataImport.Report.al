@@ -1,5 +1,10 @@
 Report 87996 "WanaMove TableData Import"
 {
+    // 21951 Insert 0 Modify in 2 minutes 3 secondes 819 millisecondes 
+    // from a 6836 Ko file (TableData_Sakara_%2 (27).yaml)
+    // 44099 Insert 0 Modify in 3 minutes 39 secondes 357 millisecondes
+    // from 13700 Ko file for entries (TableData_Sakara_%2 (31).yaml)
+
     Caption = 'TableData Import';
     ProcessingOnly = true;
     UsageCategory = Administration;
@@ -24,10 +29,6 @@ Report 87996 "WanaMove TableData Import"
         tabledata "Pstd. Phys. Invt. Record Hdr" = I, tabledata "Pstd. Phys. Invt. Record Line" = I, tabledata "Pstd. Phys. Invt. Order Hdr" = I, tabledata "Pstd. Phys. Invt. Order Line" = I,
         tabledata "Bank Account Statement Line" = I, tabledata "Change Log Entry" = I, tabledata "Posted Approval Entry" = I, tabledata "FA Register" = I, tabledata "Post Value Entry to G/L" = I,
         tabledata "Bank Account Statement" = I, tabledata "Dimension Set Tree Node" = I, tabledata "Cancelled Document" = I, tabledata "Retention Period" = I;
-    // Table System.Environment.Configuration."Guided Experience Item"' is inaccessible due to its protection levelALAL0161
-    //  "Guided Experience Item"
-    //  "User Checklist Status"
-
 
     requestpage
     {
@@ -63,57 +64,64 @@ Report 87996 "WanaMove TableData Import"
         jObject: JsonObject;
         YamlText: Text;
         TempBlob: Codeunit "Temp Blob";
-        oStream: OutStream;
         iStream: InStream;
         FileName: Text;
         DialogTitleLbl: Label 'Select the file to import';
-        FromFolderLbl: Label ''; //'C:\Temp';
         FromFilterLbl: Label 'yaml files (*.yaml)|*.yaml|All files (*.*)|*.*';
         StartDateTime: DateTime;
     begin
         TempBlob.CreateInStream(iStream, TextEncoding::UTF8);
-        if UploadIntoStream(DialogTitleLbl, FromFolderLbl, FromFilterLbl, FileName, iStream) then begin
+        if UploadIntoStream(DialogTitleLbl, '', FromFilterLbl, FileName, iStream) then begin
+            if GuiAllowed then
+                ProgressBar.Init(0, 0, 'Importing table data...');
             StartDateTime := CurrentDateTime;
             iStream.Read(YamlText);
             jObject.ReadFromYaml(YamlText);
             ImportTableData(jObject);
-            Message('%1 Insert %2 Modify to %3 tables in %4', CountInsert, CountModify, CountTables, CurrentDateTime - StartDateTime);
+            if GuiAllowed then
+                ProgressBar.Close();
+            if GuiAllowed then
+                Message('%1 Insert %2 Modify in %3', CountInsert, CountModify, CurrentDateTime - StartDateTime);
         end;
     end;
 
-    local procedure ImportTableData(var jObject: JsonObject)
+    local procedure ImportTableData(jObject: JsonObject)
     var
         Table: Text;
         TableId: Integer;
+        jToken: JsonToken;
         jRecordToken: JsonToken;
         RecRef: RecordRef;
         RecRef2: RecordRef;
+        AllObj: Record AllObj;
+        xTableId: Integer;
     begin
         foreach Table in jObject.Keys do begin
             TableId := ToInteger(Table);
-            // if TableId <> Database::"Change Log Entry" then begin
-            RecRef2.Open(TableId);
-            JObject.Get(Table, jRecordToken);
-            foreach jRecordToken in jRecordToken.AsArray() do begin
-                RecRef := ToRecordRef(jRecordToken.AsObject(), TableId);
-                RecRef2.Copy(RecRef);
-                if not RecRef2.Find() then begin
-                    RecRef.Insert(false);
-                    CountInsert += 1;
-                end else if Replace then begin
+            if not SkipTable(TableId) then begin
+                RecRef2.Open(TableId);
+                jObject.Get(Table, jToken);
+                foreach jRecordToken in jToken.AsArray() do begin
+                    if GuiAllowed and (xTableId <> TableID) then begin
+                        AllObj.Get(ObjectType::Table, TableId);
+                        ProgressBar.Update(StrSubstNo('%1 %2', TableId, AllObj."Object Name"));
+                        xTableId := TableId;
+                    end;
+                    RecRef := ToRecordRef(jRecordToken.AsObject(), TableId);
                     RecRef2.Copy(RecRef);
-                    RecRef2.Modify(false);
-                    CountModify += 1;
+                    if not RecRef2.Find() then begin
+                        RecRef.Insert(false);
+                        CountInsert += 1;
+                    end else if Replace then begin
+                        RecRef2.Copy(RecRef);
+                        RecRef2.Modify(false);
+                        CountModify += 1;
+                    end;
+                    //TODO +Document Attachment (1173)
+                    //TODO +RecordLinks (2000000068) (Type Note, Link)
                 end;
-                //TODO +Document Attachment (1173)
-
-                //TODO +RecordLinks (2000000068) (Type Note, Link)
+                RecRef2.Close();
             end;
-            RecRef2.Close();
-
-            // if jObject.Get('Children') then
-            // foreach jRecordToken in jRecordToken.AsArray() do begin
-            // end;
         end;
     end;
 
@@ -126,76 +134,78 @@ Report 87996 "WanaMove TableData Import"
     local procedure ToRecordRef(jObject: JsonObject; TableID: Integer) ReturnValue: RecordRef
     var
         FldRef: FieldRef;
-        i: Integer;
         Field: Text;
         jToken: JsonToken;
         oStream: OutStream;
         iStream: InStream;
-        DurationString: Text;
-        DurationValue: Duration;
         RecID: RecordId;
     begin
         ReturnValue.Open(TableID);
         foreach Field in jObject.Keys() do begin
-            jObject.Get(Field, jToken);
-            FldRef := ReturnValue.Field(ToInteger(Field));
-            case FldRef.Type of
-                FieldType::BigInteger:
-                    FldRef.Value := jToken.AsValue().AsBigInteger();
-                FieldType::Blob:
-                    begin
-                        TableDataBuffer."Some BLOB".CreateOutStream(oStream, TextEncoding::UTF8);
-                        Base64Convert.FromBase64(jToken.AsValue().AsText(), oStream);
-                    end;
-                FieldType::Boolean:
-                    FldRef.Value := jToken.AsValue().AsBoolean();
-                FieldType::Code:
-                    FldRef.Value := jToken.AsValue().AsText();
-                FieldType::Date:
-                    FldRef.Value := jToken.AsValue().AsDate();
-                FieldType::DateFormula:
-                    FldRef.Value := jToken.AsValue().AsText();
-                FieldType::DateTime:
-                    FldRef.Value := jToken.AsValue().AsDateTime();
-                FieldType::Decimal:
-                    FldRef.Value := jToken.AsValue().AsDecimal();
-                FieldType::Duration:
-                    FldRef.Value := ToDuration(jToken.AsValue().AsText);
-                FieldType::Guid:
-                    FldRef.Value := jToken.AsValue().AsText();
-                FieldType::Integer:
-                    FldRef.Value := jToken.AsValue().AsInteger();
-                FieldType::Media:
-                    begin
-                        TempBlob.CreateOutStream(oStream, TextEncoding::UTF8);
-                        Base64Convert.FromBase64(jToken.AsValue().AsText(), oStream);
-                        TempBlob.CreateInStream(iStream, TextEncoding::UTF8);
-                        CopyStream(oStream, iStream);
-                        TableDataBuffer."Some Media".ImportStream(iStream, '');
-                        FldRef.Value := TableDataBuffer."Some Media".MediaId;
-                    end;
-                FieldType::MediaSet:
-                    ; //TODO MediaSet
-                FieldType::Option:
-                    FldRef.Value := jToken.AsValue().AsOption();
-                FieldType::RecordId:
-                    begin
-                        Evaluate(RecID, jToken.AsValue().AsText());
-                        FldRef.Value := RecID;
-                    end;
-                FieldType::TableFilter:
-                    ; //TODO TableFilter
-                FieldType::Text:
-                    FldRef.Value := jToken.AsValue().AsText();
-                FieldType::Time:
-                    FldRef.Value := jToken.AsValue().AsTime();
-                else
-                    Error('Unknown field : Table %1, Field %2, FieldType %3', ReturnValue.Name, FldRef.Name, FldRef.Type);
+            if Field = 'Children' then begin
+                jObject.Get('Children', jToken);
+                ImportTableData(jToken.AsObject());
+            end else begin
+                jObject.Get(Field, jToken);
+                FldRef := ReturnValue.Field(ToInteger(Field));
+                case FldRef.Type of
+                    FieldType::BigInteger:
+                        FldRef.Value := jToken.AsValue().AsBigInteger();
+                    FieldType::Blob:
+                        begin
+                            TableDataBuffer."Some BLOB".CreateOutStream(oStream, TextEncoding::UTF8);
+                            Base64Convert.FromBase64(jToken.AsValue().AsText(), oStream);
+                        end;
+                    FieldType::Boolean:
+                        FldRef.Value := jToken.AsValue().AsBoolean();
+                    FieldType::Code:
+                        FldRef.Value := jToken.AsValue().AsText();
+                    FieldType::Date:
+                        FldRef.Value := jToken.AsValue().AsDate();
+                    FieldType::DateFormula:
+                        FldRef.Value := jToken.AsValue().AsText();
+                    FieldType::DateTime:
+                        FldRef.Value := jToken.AsValue().AsDateTime();
+                    FieldType::Decimal:
+                        FldRef.Value := jToken.AsValue().AsDecimal();
+                    FieldType::Duration:
+                        FldRef.Value := ToDuration(jToken.AsValue().AsText);
+                    FieldType::Guid:
+                        FldRef.Value := jToken.AsValue().AsText();
+                    FieldType::Integer:
+                        FldRef.Value := jToken.AsValue().AsInteger();
+                    FieldType::Media:
+                        begin
+                            TempBlob.CreateOutStream(oStream, TextEncoding::UTF8);
+                            Base64Convert.FromBase64(jToken.AsValue().AsText(), oStream);
+                            TempBlob.CreateInStream(iStream, TextEncoding::UTF8);
+                            CopyStream(oStream, iStream);
+                            TableDataBuffer."Some Media".ImportStream(iStream, '');
+                            FldRef.Value := TableDataBuffer."Some Media".MediaId;
+                        end;
+                    FieldType::MediaSet:
+                        ; //TODO MediaSet
+                    FieldType::Option:
+                        FldRef.Value := jToken.AsValue().AsOption();
+                    FieldType::RecordId:
+                        begin
+                            Evaluate(RecID, jToken.AsValue().AsText());
+                            FldRef.Value := RecID;
+                        end;
+                    FieldType::TableFilter:
+                        ; //TODO TableFilter
+                    FieldType::Text:
+                        FldRef.Value := jToken.AsValue().AsText();
+                    FieldType::Time:
+                        FldRef.Value := jToken.AsValue().AsTime();
+                    else
+                        Error('Unknown field : Table %1, Field %2, FieldType %3', ReturnValue.Name, FldRef.Name, FldRef.Type);
+                end;
             end;
         end;
     end;
 
-    local procedure ToDuration(pText: Text) ReturnValue: Duration
+    local procedure ToDuration(pText: Text): Duration
     var
         Split: List of [Text];
     begin
@@ -208,11 +218,34 @@ Report 87996 "WanaMove TableData Import"
             ToInteger(Split.Get(5))); // ms
     end;
 
+    local procedure SkipTable(pID: Integer): Boolean
+    var
+        UserPermissions: Codeunit "User Permissions";
+        TempDummyExpandedPermission: Record "Expanded Permission" temporary;
+    // RetenPolAllowedTables: Codeunit "Reten. Pol. Allowed Tables";
+    begin
+        if pID in [
+            6123, // "E-Doc. Mapping Log"
+            3901  // "Retention Policy Setup"
+            ]
+        then
+            exit(true);
+
+        // Table xxxx is inaccessible due to its protection levelALAL0161
+
+        // exit(pID in [
+        //         1994 //Database::"User Checklist Status" 
+        //     ]);
+        TempDummyExpandedPermission := UserPermissions.GetEffectivePermission(TempDummyExpandedPermission."Object Type"::"Table Data", pId);
+        exit(TempDummyExpandedPermission."Insert Permission" = TempDummyExpandedPermission."Insert Permission"::" ");
+        // exit(not RetenPolAllowedTables.IsAllowedTable(pID));
+    end;
+
     var
         Replace: Boolean;
         TableDataBuffer: Record "TableData Buffer";
         Base64Convert: Codeunit "Base64 Convert";
         TempBlob: Codeunit "Temp Blob";
-        CountInsert, CountModify, CountTables : Integer;
-
+        CountInsert, CountModify : Integer;
+        ProgressBar: Codeunit "Config. Progress Bar";
 }
